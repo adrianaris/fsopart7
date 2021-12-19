@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { vote, sorted } from "../reducers/anecdoteReducer"
 import { setNotification } from "../reducers/notificationReducer"
+import { Link } from "react-router-dom"
 
 const AnecdoteList = (props) => {
     const filter = props.filter
@@ -12,19 +13,17 @@ const AnecdoteList = (props) => {
       props.setNotification(`you voted for ${anecdote.content}`, 10)
     }
     return (
-        <>
+        <ul>
         {filteredAnecdotes.map(anecdote =>
-            <div key={anecdote.id}>
-              <div>
-                {anecdote.content}
-              </div>
+            <li key={anecdote.id}>
+                <Link to={`/anecdotes/${anecdote.id}`}> {anecdote.content} </Link>
               <div>
                 has {anecdote.votes}
                 <button onClick={() => handleClick(anecdote)}>vote</button>
               </div>
-            </div>
+            </li>
         )}
-        </>
+        </ul>
     )
 }
 
