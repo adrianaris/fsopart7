@@ -52,7 +52,7 @@ const App = () => {
     </Router>
       <footer style={footer}>
         Anecdote app for <a href='https://courses.helsinki.fi/fi/aytkt21009/129171256'>Fullstack whatever</a>. 
-        See <a href="https://github.com/mluukkai/routed-anecdotes">https://github.com/mluukkai/routed-anecdotes</a> for the source code
+        See <a href="https://github.com/adrianaris/fsopart7">https://github.com/adrianaris/fsopart7</a> for the source code
       </footer>
     </div>
   )
