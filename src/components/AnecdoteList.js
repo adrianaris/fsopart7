@@ -17,8 +17,10 @@ const AnecdoteList = (props) => {
         {filteredAnecdotes.map(anecdote =>
             <li key={anecdote.id}>
                 <Link to={`/anecdotes/${anecdote.id}`}> {anecdote.content} </Link>
+              <div>by {anecdote.author}</div>
+              <div>check {anecdote.url} for more info</div>
               <div>
-                has {anecdote.votes}
+                has {anecdote.votes} votes
                 <button onClick={() => handleClick(anecdote)}>vote</button>
               </div>
             </li>

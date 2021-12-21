@@ -43,9 +43,9 @@ export const initAnecdotes = () => {
   }
 }
 
-export const createAnecdote = content => {
+export const createAnecdote = anecdote => {
   return async dispatch => {
-    const newA = await anecdotesService.addNew(content)
+    const newA = await anecdotesService.addNew(anecdote)
       dispatch({
         type: 'CREATE',
         data: newA 
