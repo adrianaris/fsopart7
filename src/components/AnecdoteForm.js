@@ -22,6 +22,12 @@ const AnecdoteForm = (props) => {
       .then(setRedirect(true))
     props.setNotification(`you created ${content.value}`, 10)
   }
+  
+  const reset = () => {
+    content.reset()
+    author.reset()
+    url.reset()
+  }
 
   if (redirect) return <Redirect to="/anecdotes" />   
 
@@ -45,7 +51,7 @@ const AnecdoteForm = (props) => {
         onChange={url.onChange}
           /></div> 
       <button>create</button>
-      <button type="button" onClick={() => content.reset}>reset</button>
+      <button type="button" onClick={() => reset()}>reset</button>
     </form>
       </>
   )
