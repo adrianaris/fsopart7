@@ -17,16 +17,15 @@ const AnecdoteForm = (props) => {
       author: author.value, 
       url: url.value
     }
-    console.log(anecdote)
     props.createAnecdote(anecdote)
       .then(setRedirect(true))
     props.setNotification(`you created ${content.value}`, 10)
   }
   
   const reset = () => {
-    content.reset()
-    author.reset()
-    url.reset()
+    content.onReset()
+    author.onReset()
+    url.onReset()
   }
 
   if (redirect) return <Redirect to="/anecdotes" />   
@@ -34,24 +33,12 @@ const AnecdoteForm = (props) => {
   return (
       <>
     <h2>create new</h2>
-    <form onSubmit={addAnecdote}>
-      <div>content<input 
-        type={content.type} 
-        value={content.value}
-        onChange={content.onChange}
-        /></div> 
-      <div>author<input 
-        type={author.type}
-        value={author.value}
-        onChange={author.onChange}
-          /></div> 
-      <div>url for more info<input 
-        type={url.type}
-        value={url.value}
-        onChange={url.onChange}
-          /></div> 
+    <form onSubmit={addAnecdote} onReset={() => reset()}>
+      <div>content<input {...content}/></div> 
+      <div>author<input {...author}/></div> 
+      <div>url for more info<input {...url}/></div> 
       <button>create</button>
-      <button type="button" onClick={() => reset()}>reset</button>
+      <button type="reset">reset</button>
     </form>
       </>
   )
