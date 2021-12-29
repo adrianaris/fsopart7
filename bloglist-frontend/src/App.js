@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './actions/setNotification'
-import { initBlogs, create, like, del  } from './actions/blog'
+import { initBlogs, create } from './actions/blog'
 
 
 const App = () => {
@@ -72,14 +72,6 @@ const App = () => {
     setUser(null)
   }
 
-  const updBLog = blog => dispatch(like(blog))
-
-  const delBlog = blog => {
-    dispatch(del(blog))
-    const deletedBlog = `blog ${blog.title} by ${blog.author} has been deleted`
-    dispatch(setNotification(`${deletedBlog}`, 10, 'message'))
-  }
-
   return (
     <Container>
       <h2>blogs</h2>
@@ -101,15 +93,13 @@ const App = () => {
               addBlog={addBlog}
             />
           </Toggable>
-          {blogs.map(blog =>
+        {blogs.map(blog =>
             <Blog
               key={blog.id}
-              blog={blog}
-              addLike={blog => updBLog(blog)}
               user={user}
-              handleDeleteBlog={() => delBlog(blog)}
+              blog={blog}
             />
-          )}
+        )}
         </>
       }
     </Container>

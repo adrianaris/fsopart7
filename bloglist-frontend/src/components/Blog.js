@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { like, del } from '../actions/blog'
+import { setNotification } from '../actions/setNotification'
 
-const Blog = ({ blog, addLike, user, handleDeleteBlog }) => {
+const Blog = ({ user, blog }) => {
+  const dispatch = useDispatch()
+
   const [visible, setVisible] = useState(false)
 
   const hideDisplay = { display: visible ? 'none' : '' }
@@ -8,6 +13,11 @@ const Blog = ({ blog, addLike, user, handleDeleteBlog }) => {
 
   const toggleVisibility = () => {
     setVisible(!visible)
+  }
+
+  const handleDel= blog => {
+    dispatch(del(blog))
+    dispatch(setNotification(`you have deleted blog ${blog.title} by ${blog.author}`, 10, 'message'))
   }
 
     const blogStyle = {
@@ -31,8 +41,8 @@ const Blog = ({ blog, addLike, user, handleDeleteBlog }) => {
           {blog.url}
         </div>
         <div>
-          <span className='likesCounter'>{blog.likes}</span>
-          <button onClick={() => addLike(blog)} className='likeButton'>like</button>
+          <span className='likesCounter'>likes: {blog.likes}</span>
+          <button onClick={() => dispatch(like(blog))} className='likeButton'>like</button>
         </div>
         {blog.user &&
         <>
@@ -40,7 +50,7 @@ const Blog = ({ blog, addLike, user, handleDeleteBlog }) => {
             {blog.user.name}
           </div>
           {(blog.user.name === user.name) &&
-          <button onClick={handleDeleteBlog} className="removeButton">
+          <button onClick={() => handleDel(blog)} className="removeButton">
         remove
           </button>
           }
@@ -48,6 +58,7 @@ const Blog = ({ blog, addLike, user, handleDeleteBlog }) => {
         }
       </div>
     </div>
-  )}
+  )
+}
 
 export default Blog
