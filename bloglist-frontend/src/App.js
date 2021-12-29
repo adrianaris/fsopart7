@@ -8,23 +8,22 @@ import AddBlogForm from './components/AddBlogForm'
 import Toggable from './components/Toggable'
 import Container from '@material-ui/core/Container'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './actions/setNotification'
+import { initBlogs, create, like, del  } from './actions/blog'
 
 
 const App = () => {
   const dispatch = useDispatch()
+  const blogs = useSelector(state => state.blogs)
 
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
-  }, [])
+    dispatch(initBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedBlogUser')
@@ -61,14 +60,10 @@ const App = () => {
     addBlogFormRef.current.toggleVisibility()
 
     try {
-      await blogService.createBlog(blog)
+      dispatch(create(blog))
     } catch (error) {
       dispatch(setNotification(`${error}`, 10, 'error'))
     }
-
-    const blogs = await blogService.getAll()
-
-    setBlogs(blogs)
     dispatch(setNotification(`a new blog ${blog.title} by ${blog.author} added`, 10, 'message'))
   }
 
@@ -77,19 +72,11 @@ const App = () => {
     setUser(null)
   }
 
-  const updBLog = async (id, newBlog) => {
-    await blogService.updateBlog(id, newBlog)
-    const blogs = await blogService.getAll()
-    setBlogs(blogs)
-  }
+  const updBLog = blog => dispatch(like(blog))
 
-  const delBlog = async (blog) => {
+  const delBlog = blog => {
+    dispatch(del(blog))
     const deletedBlog = `blog ${blog.title} by ${blog.author} has been deleted`
-    await blogService.deleteBlog(blog.id)
-
-    const blogs = await blogService.getAll()
-
-    setBlogs(blogs)
     dispatch(setNotification(`${deletedBlog}`, 10, 'message'))
   }
 
@@ -118,7 +105,7 @@ const App = () => {
             <Blog
               key={blog.id}
               blog={blog}
-              addLike={(id, newBlog) => updBLog(id, newBlog)}
+              addLike={blog => updBLog(blog)}
               user={user}
               handleDeleteBlog={() => delBlog(blog)}
             />

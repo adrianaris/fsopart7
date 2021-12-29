@@ -10,12 +10,7 @@ const Blog = ({ blog, addLike, user, handleDeleteBlog }) => {
     setVisible(!visible)
   }
 
-  const handleLike = () => {
-    blog.likes++
-    addLike(blog.id, blog)
-  }
-
-  const blogStyle = {
+    const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
@@ -37,7 +32,7 @@ const Blog = ({ blog, addLike, user, handleDeleteBlog }) => {
         </div>
         <div>
           <span className='likesCounter'>{blog.likes}</span>
-          <button onClick={handleLike} className='likeButton'>like</button>
+          <button onClick={() => addLike(blog)} className='likeButton'>like</button>
         </div>
         {blog.user &&
         <>
