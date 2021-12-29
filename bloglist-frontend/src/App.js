@@ -4,21 +4,30 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import AddBlogForm from './components/AddBlogForm'
 import Toggable from './components/Toggable'
+import User from './components/User'
 import Container from '@material-ui/core/Container'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './actions/setNotification'
 import { initBlogs, create } from './actions/blog'
 import { logout } from './actions/login'
+import { initUsers } from './actions/users'
 
 
 const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
+  const users = useSelector(state => state.users)
   const user = useSelector(state => state.login)
+
+  console.log(users)
 
   useEffect(() => {
     dispatch(initBlogs())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initUsers())
   }, [dispatch])
 
   const addBlogFormRef = useRef()
@@ -46,21 +55,32 @@ const App = () => {
         <LoginForm
         /> :
         <>
-          <h4>{user.name} logged-in
-            <button onClick={handleLogout}>logout</button>
-          </h4>
+          <div><b>{user.name} logged-in</b></div>
+          <button onClick={handleLogout}>logout</button>
+          <h2>Users</h2>
+          <table>
+            <tr>
+              <td></td><td><b>blogs created</b></td>
+            </tr>
+            {users.map(user =>
+              <User
+                key={user.id}
+                user={user}
+              />
+            )}
+          </table>
           <Toggable buttonLabel="new blog" ref={addBlogFormRef}>
             <AddBlogForm
               addBlog={addBlog}
             />
           </Toggable>
-        {blogs.map(blog =>
+          {blogs.map(blog =>
             <Blog
               key={blog.id}
               user={user}
               blog={blog}
             />
-        )}
+          )}
         </>
       }
     </Container>

@@ -20,7 +20,7 @@ const Blog = ({ user, blog }) => {
     dispatch(setNotification(`you have deleted blog ${blog.title} by ${blog.author}`, 10, 'message'))
   }
 
-    const blogStyle = {
+  const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
