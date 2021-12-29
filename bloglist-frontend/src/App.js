@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import Notification from './components/Notification'
-import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import AddBlogForm from './components/AddBlogForm'
 import Toggable from './components/Toggable'
@@ -11,48 +9,17 @@ import Container from '@material-ui/core/Container'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './actions/setNotification'
 import { initBlogs, create } from './actions/blog'
+import { logout } from './actions/login'
 
 
 const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
-
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const user = useSelector(state => state.login)
 
   useEffect(() => {
     dispatch(initBlogs())
   }, [dispatch])
-
-  useEffect(() => {
-    const loggedUser = window.localStorage.getItem('loggedBlogUser')
-    if(loggedUser) {
-      const user = JSON.parse(loggedUser)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username, password,
-      })
-      window.localStorage.setItem(
-        'loggedBlogUser', JSON.stringify(user)
-      )
-
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      dispatch(setNotification('Wrong credentials', 10, 'error'))
-    }
-  }
 
   const addBlogFormRef = useRef()
 
@@ -68,21 +35,15 @@ const App = () => {
   }
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogUser')
-    setUser(null)
+    dispatch(logout())
   }
 
   return (
     <Container>
       <h2>blogs</h2>
       <Notification />
-      {user === null ?
+      {user===null ?
         <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          password={password}
-          setPassword={setPassword}
-          setUsername={setUsername}
         /> :
         <>
           <h4>{user.name} logged-in
