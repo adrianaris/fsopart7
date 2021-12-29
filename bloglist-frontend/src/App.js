@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
-import Error from './components/Error'
+import Notification from './components/Notification'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import AddBlogForm from './components/AddBlogForm'
@@ -51,7 +51,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      dispatch(setNotification('Wrong credentials', 10))
+      dispatch(setNotification('Wrong credentials', 10, 'error'))
     }
   }
 
@@ -63,13 +63,13 @@ const App = () => {
     try {
       await blogService.createBlog(blog)
     } catch (error) {
-      dispatch(setNotification(`${error}`, 10))
+      dispatch(setNotification(`${error}`, 10, 'error'))
     }
 
     const blogs = await blogService.getAll()
 
     setBlogs(blogs)
-    dispatch(setNotification(`a new blog ${blog.title} by ${blog.author} added`, 10))
+    dispatch(setNotification(`a new blog ${blog.title} by ${blog.author} added`, 10, 'message'))
   }
 
   const handleLogout = () => {
@@ -90,13 +90,13 @@ const App = () => {
     const blogs = await blogService.getAll()
 
     setBlogs(blogs)
-    dispatch(setNotification(`${deletedBlog}`, 10))
+    dispatch(setNotification(`${deletedBlog}`, 10, 'message'))
   }
 
   return (
     <Container>
       <h2>blogs</h2>
-      <Error />
+      <Notification />
       {user === null ?
         <LoginForm
           handleLogin={handleLogin}
