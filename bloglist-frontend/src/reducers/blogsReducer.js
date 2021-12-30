@@ -13,6 +13,13 @@ const blogsReducer = (state = [], action) => {
     const newBlog = { ...blog, likes: blog.likes + 1 }
     return state.map(b => b.id !== id ? b : newBlog)
   }
+  case 'COMMENT': {
+    const id = action.data.id
+    const message = action.data.message
+    const blog = state.find(b => b.id === id)
+    const newBlog = { ...blog, comments: blog.comments.concat(message) }
+    return state.map(b => b.id !== id ? b: newBlog)
+  }
   default:
     return state
   }

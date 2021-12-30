@@ -37,3 +37,16 @@ export const del = blog => {
     })
   }
 }
+
+export const comment = (id, message)=> {
+  return async dispatch => {
+    await blogService.commentBlog(id, message)
+    dispatch({
+      type: 'COMMENT',
+      data: {
+        id: id,
+        message: message
+      }
+    })
+  }
+}
