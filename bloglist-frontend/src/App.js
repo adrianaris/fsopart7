@@ -11,23 +11,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './actions/setNotification'
 import { initBlogs, create } from './actions/blog'
 import { logout } from './actions/login'
-import { initUsers } from './actions/users'
 
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from 'react-router-dom'
 
 const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
-  const users = useSelector(state => state.users)
   const user = useSelector(state => state.login)
-
-  console.log(users)
 
   useEffect(() => {
     dispatch(initBlogs())
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(initUsers())
   }, [dispatch])
 
   const addBlogFormRef = useRef()
@@ -40,7 +36,9 @@ const App = () => {
     } catch (error) {
       dispatch(setNotification(`${error}`, 10, 'error'))
     }
-    dispatch(setNotification(`a new blog ${blog.title} by ${blog.author} added`, 10, 'message'))
+
+    dispatch(setNotification(`a new blog ${blog.title}
+      by ${blog.author} added`, 10, 'message'))
   }
 
   const handleLogout = () => {
@@ -51,25 +49,30 @@ const App = () => {
     <Container>
       <h2>blogs</h2>
       <Notification />
-      {user===null ?
-        <LoginForm
-        /> :
+      {user===null
+        ?
+        <LoginForm />
+        :
         <>
-          <div><b>{user.name} logged-in</b></div>
-          <button onClick={handleLogout}>logout</button>
-          <Users />
-          <Toggable buttonLabel="new blog" ref={addBlogFormRef}>
-            <AddBlogForm
-              addBlog={addBlog}
-            />
-          </Toggable>
-          {blogs.map(blog =>
-            <Blog
-              key={blog.id}
-              user={user}
-              blog={blog}
-            />
-          )}
+          <Router>
+            <Link style={{ padding: 5 }} to="/">home</Link>
+            <Link style={{ padding: 5 }} to="/users">users</Link>
+            <div><b>{user.name} logged-in</b></div>
+            <button onClick={handleLogout}>logout</button>
+            <Routes>
+              <Route path="/users" element={<Users />}/>
+              <Route path="/"
+              element={<>
+                <Toggable buttonLabel="new blog" ref={addBlogFormRef}>
+                  <AddBlogForm addBlog={addBlog} />
+                </Toggable>
+                {blogs.map(blog =>
+                  <Blog key={blog.id} user={user} blog={blog} />
+                )}
+                </>
+                }/>
+            </Routes>
+          </Router>
         </>
       }
     </Container>
