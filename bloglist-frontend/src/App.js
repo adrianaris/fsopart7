@@ -4,7 +4,7 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import AddBlogForm from './components/AddBlogForm'
 import Toggable from './components/Toggable'
-import User from './components/User'
+import Users from './components/Users'
 import Container from '@material-ui/core/Container'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -57,18 +57,7 @@ const App = () => {
         <>
           <div><b>{user.name} logged-in</b></div>
           <button onClick={handleLogout}>logout</button>
-          <h2>Users</h2>
-          <table>
-            <tr>
-              <td></td><td><b>blogs created</b></td>
-            </tr>
-            {users.map(user =>
-              <User
-                key={user.id}
-                user={user}
-              />
-            )}
-          </table>
+          <Users />
           <Toggable buttonLabel="new blog" ref={addBlogFormRef}>
             <AddBlogForm
               addBlog={addBlog}
