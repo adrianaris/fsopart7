@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
+import Blogs from './components/Blogs'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
@@ -10,7 +11,7 @@ import Container from '@material-ui/core/Container'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './actions/setNotification'
-import { initBlogs, create } from './actions/blog'
+import { create } from './actions/blog'
 import { logout } from './actions/login'
 
 import {
@@ -20,12 +21,7 @@ import {
 
 const App = () => {
   const dispatch = useDispatch()
-  const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.login)
-
-  useEffect(() => {
-    dispatch(initBlogs())
-  }, [dispatch])
 
   const addBlogFormRef = useRef()
 
@@ -48,7 +44,7 @@ const App = () => {
 
   return (
     <Container>
-      <h2>blogs</h2>
+      <h2>blogs app</h2>
       <Notification />
       {user===null
         ?
@@ -61,16 +57,15 @@ const App = () => {
             <div><b>{user.name} logged-in</b></div>
             <button onClick={handleLogout}>logout</button>
             <Routes>
-              <Route path="/users/:name" element={<User />}/>
+              <Route path="/users/:name" element={<User />} />
+              <Route path="/blogs/:id" element={<Blog />} />
               <Route path="/users" element={<Users />}/>
               <Route path="/"
                 element={<>
                   <Toggable buttonLabel="new blog" ref={addBlogFormRef}>
                     <AddBlogForm addBlog={addBlog} />
                   </Toggable>
-                  {blogs.map(blog =>
-                    <Blog key={blog.id} user={user} blog={blog} />
-                  )}
+                  <Blogs />
                 </>}/>
             </Routes>
           </Router>
