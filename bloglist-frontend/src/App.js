@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm'
 import AddBlogForm from './components/AddBlogForm'
 import Toggable from './components/Toggable'
 import Users from './components/Users'
+import User from './components/User'
 import Container from '@material-ui/core/Container'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -60,17 +61,17 @@ const App = () => {
             <div><b>{user.name} logged-in</b></div>
             <button onClick={handleLogout}>logout</button>
             <Routes>
+              <Route path="/users/:name" element={<User />}/>
               <Route path="/users" element={<Users />}/>
               <Route path="/"
-              element={<>
-                <Toggable buttonLabel="new blog" ref={addBlogFormRef}>
-                  <AddBlogForm addBlog={addBlog} />
-                </Toggable>
-                {blogs.map(blog =>
-                  <Blog key={blog.id} user={user} blog={blog} />
-                )}
-                </>
-                }/>
+                element={<>
+                  <Toggable buttonLabel="new blog" ref={addBlogFormRef}>
+                    <AddBlogForm addBlog={addBlog} />
+                  </Toggable>
+                  {blogs.map(blog =>
+                    <Blog key={blog.id} user={user} blog={blog} />
+                  )}
+                </>}/>
             </Routes>
           </Router>
         </>
