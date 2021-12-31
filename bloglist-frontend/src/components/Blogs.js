@@ -17,7 +17,7 @@ const Blogs = () => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-    width: 500,
+    width: '100%',
     float: 'left',
     clear: 'left'
   }
