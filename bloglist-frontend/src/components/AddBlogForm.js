@@ -1,4 +1,27 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
+
+const Input = styled.input`
+display: inline-block;
+float: left;
+`
+const Label = styled.label`
+display: inline-block;
+float: left;
+clear: left;
+width: 80px;
+text-align: left;
+`
+const Button = styled.button`
+padding: 0em 1em;
+margin: 0.2em;
+`
+const Div = styled.div`
+width: 270px;
+float: left;
+clear: left;
+text-align: right;
+`
 
 const AddBlogForm = (props) => {
   const { addBlog } = props
@@ -14,34 +37,32 @@ const AddBlogForm = (props) => {
 
   return (
     <div className="formDiv">
-      <h2>create new</h2>
+      <h4>create new</h4>
 
       <form onSubmit={createBlog}>
         <div>
-                  Title:
-          <input
+          <Label>Title:</Label>
+          <Input
             type="text"
             id="title"
             onChange={({ target }) => blog.title = target.value}
           />
-        </div>
-        <div>
-                  Author:
-          <input
+          <Label>Author:</Label>
+          <Input
             type="text"
             id="author"
             onChange={({ target }) => blog.author = target.value}
           />
-        </div>
-        <div>
-                  URL:
-          <input
+          <Label>URL:</Label>
+          <Input
             type="text"
             id="url"
             onChange={({ target }) => blog.url = target.value}
           />
         </div>
-        <button type="submit" onClick={() => setNewBlog(blog)}>Add Blog</button>
+        <Div>
+          <Button type="submit" onClick={() => setNewBlog(blog)}>Add Blog</Button>
+        </Div>
       </form>
     </div>
   )

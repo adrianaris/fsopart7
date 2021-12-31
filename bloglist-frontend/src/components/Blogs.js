@@ -16,7 +16,10 @@ const Blogs = () => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
+    width: 500,
+    float: 'left',
+    clear: 'left'
   }
 
   return (
